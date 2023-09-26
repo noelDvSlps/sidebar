@@ -1,24 +1,27 @@
+import { Link, useMatch, useResolvedPath } from "react-router-dom";
+
 /* eslint-disable react/prop-types */
 export const Navbar = () => {
   return (
     <nav className="nav">
-      <a href="/" className="site-title">
+      <Link to="/" className="site-title">
         site Name
-      </a>
+      </Link>
       <ul>
-        <CustomLink href="/pricing">Pricing</CustomLink>
-        <CustomLink href="/about">About</CustomLink>
+        <CustomLink to="/pricing">Pricing</CustomLink>
+        <CustomLink to="/about">About</CustomLink>
       </ul>
     </nav>
   );
 };
-function CustomLink({ href, children, ...props }) {
-  const path = window.location.pathname;
+function CustomLink({ to, children, ...props }) {
+  const resolvedPath = useResolvedPath(to);
+  const isActive = useMatch({ path: resolvedPath.pathname, end: true });
   return (
-    <li className={path === href ? "active" : ""}>
-      <a href={href} {...props}>
+    <li className={isActive ? "active" : ""}>
+      <Link to={to} {...props}>
         {children}
-      </a>
+      </Link>
     </li>
   );
 }
